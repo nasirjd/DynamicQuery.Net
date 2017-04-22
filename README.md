@@ -32,8 +32,11 @@ var filerInput = new FilterInput[]
 ```
 ## Filter IQueryable
 
+now we can use our filterInput variable
+
 ```cs
-myQueryable.Filter(filerInput);
+myQueryable = myQueryable.Filter(filerInput);
 ```
+
 
 I Hope this will be Helpful
