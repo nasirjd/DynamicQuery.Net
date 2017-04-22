@@ -36,3 +36,4 @@ var filerInput = new FilterInput[]
 myQueryable.Filter(filerInput);
 ```
 
+I Hope this will be Helpful
