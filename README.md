@@ -1,7 +1,7 @@
 # DynamicQuery.Net
 Dynamic filtering for IQueryable collections in C#.net
 
-#How to use
+# How to use
 
 ## [Install Nuget Package](https://www.nuget.org/packages/DynamicQuery.Net)
 ```
@@ -32,7 +32,7 @@ var filerInput = new FilterInput[]
 ```
 ## Filter IQueryable
 
-now we can use our filterInput variable
+Now we can use our filterInput variable:
 
 
 
