@@ -34,7 +34,7 @@ var filerInput = new FilterInput[]
             };
 ```
 
-if you want to have more than one value for a single field, you can do like this: 
+if you want to have more than one value for a single field, you can feed Value with an array: 
 ```cs
 var filerInput = new FilterInput[]
             {
