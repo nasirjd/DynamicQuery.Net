@@ -33,6 +33,21 @@ var filerInput = new FilterInput[]
                 }
             };
 ```
+
+if you want to have more than one value for a single field, you can do like this: 
+```cs
+var filerInput = new FilterInput[]
+            {
+                new FilterInput
+                {
+                    Operation = OperationTypeEnum.NotEqual,
+                    Property = "ClassNo",
+                    Type = InputTypeEnum.Number,
+                    Value = new[]{2,3,4}
+                }
+            };
+```
+
 ## Filter IQueryable
 
 Now we can use our filterInput variable:
