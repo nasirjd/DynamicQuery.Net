@@ -10,7 +10,12 @@ if you search at this subject you will find  [DynamicQuery](https://www.nuget.or
 ```
 $ Install-Package DynamicQuery.Net
 ```
-## Create a new FilterInput
+
+# What you can do:
+
+## Dynamic Filtering:
+
+### Creating FilterInput object:
 ```cs
 var filerInput = new FilterInput
                 {
@@ -48,16 +53,80 @@ var filerInput = new FilterInput[]
             };
 ```
 
-## Filter IQueryable
+### Using FilterInput object
 
 Now we can use our filterInput variable:
-
-
 
 ```cs
 myQueryable = myQueryable.Filter(filerInput);
 ```
 
 
+## Dynamic Ordering
+
+### Creating OrderInput object:
+
+#### For a single field:
+```cs
+ var orderInput = new[]
+            {
+                new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"},
+                new OrderInput {Order = OrderTypeEnum.Asc, Property = "Name"},
+                new OrderInput {Order = OrderTypeEnum.Asc, Property = "ID"}
+            };
+```
+
+#### For an array of fields:
+
+```cs
+ var orderInput = new[]
+            {
+                new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"},
+                new OrderInput {Order = OrderTypeEnum.Asc, Property = "Name"},
+                new OrderInput {Order = OrderTypeEnum.Asc, Property = "ID"}
+            };
+```
+
+### Using OrderInput object:
+
+```cs
+myQueryable = myQueryable.Order(orderInput);
+```
+
+## Both of Filtering and Ordering:
+
+### Creating and Using OrderFilterInput object
+
+```cs
+var orderFilterInput = new OrderFilterInput 
+                {
+                    Filter = filerInput,
+                    Order = orderInput
+                }
+               
+ myQueryable = myQueryable.Filter(orderFilterInput); 
+```
+In this release OrderFilterInput properties just supports array of objects.
+
+
+## Create simple REST APIs:
+
+### In the client side send a JSON to the server:
+
+```json
+{
+    "Filter":[{"Property":"Date" , "Value":"2017/04/07" , "Type":"String" , "Operation":"GreaterThan"}],
+    "Order":[{"Property":"Date" , "Order":"Desc"},{"Property":"ID" , "Order":"Desc"}]
+}
+```
+
+### In the server just use it in .Filter() Method:
+
+```cs
+        public HttpResponseMessage Filter(OrderFilterInput orderFilterInput)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, myQueryable.Filter(orderFilterInput));
+        }
+```
 
 I Hope this will be Helpful
