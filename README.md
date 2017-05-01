@@ -113,7 +113,7 @@ In this release OrderFilterInput properties just supports array of objects.
 
 ### In the client side send a JSON to the server:
 
-```json
+```js
 {
     "Filter":[{"Property":"Date" , "Value":"2017/04/07" , "Type":"String" , "Operation":"GreaterThan"}],
     "Order":[{"Property":"Date" , "Order":"Desc"},{"Property":"ID" , "Order":"Desc"}]
