@@ -123,10 +123,10 @@ In this release OrderFilterInput properties just supports array of objects.
 ### In the server just use it in .Filter() Method:
 
 ```cs
-        public HttpResponseMessage Filter(OrderFilterInput orderFilterInput)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, myQueryable.Filter(orderFilterInput));
-        }
+  public HttpResponseMessage Filter(OrderFilterInput orderFilterInput)
+  {
+      return Request.CreateResponse(HttpStatusCode.OK, myQueryable.Filter(orderFilterInput));
+  }
 ```
 
 I Hope this will be Helpful
