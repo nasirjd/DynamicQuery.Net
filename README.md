@@ -68,12 +68,7 @@ myQueryable = myQueryable.Filter(filerInput);
 
 #### For a single field:
 ```cs
- var orderInput = new[]
-            {
-                new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"},
-                new OrderInput {Order = OrderTypeEnum.Asc, Property = "Name"},
-                new OrderInput {Order = OrderTypeEnum.Asc, Property = "ID"}
-            };
+ var orderItem = new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"};
 ```
 
 #### For an array of fields:
