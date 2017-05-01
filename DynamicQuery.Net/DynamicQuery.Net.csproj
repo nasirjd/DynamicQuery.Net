@@ -40,13 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\Input\OrderFilterInput.cs" />
+    <Compile Include="Dto\Input\OrderInput.cs" />
     <Compile Include="Enums\InputTypeEnum.cs" />
     <Compile Include="Dto\Input\FilterInput.cs" />
     <Compile Include="Enums\OperationTypeEnum.cs" />
+    <Compile Include="Enums\OrderTypeEnum.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\OrderService.cs" />
     <Compile Include="Utility\dto\input\CompareInput.cs" />
     <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Utility\OrderingHelper.cs" />
     <Compile Include="Utility\Interface\ICompare.cs" />
     <Compile Include="Utility\NormalCompare.cs" />
     <Compile Include="Utility\StringCompare.cs" />

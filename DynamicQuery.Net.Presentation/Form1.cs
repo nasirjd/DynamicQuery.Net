@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
+using DynamicQuery.Net.Utility;
 
 namespace DynamicQuery.Net.Presentation
 {
@@ -36,27 +37,39 @@ namespace DynamicQuery.Net.Presentation
         private void Form1_Load(object sender, EventArgs e)
         {
             var stop = Stopwatch.StartNew();
-            var result1 = ExpressionMode();
+
+            var ordering = new[]
+            {
+                new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"},
+                new OrderInput {Order = OrderTypeEnum.Asc, Property = "Name"},
+                new OrderInput {Order = OrderTypeEnum.Asc, Property = "ID"}
+            };
+
+            var orderItem = new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"};
+
+            var result1 = ExpressionMode()
+                //.Ordering("Date", "OrderBy");
+                //.OrderByDescending(p => p.Date).ThenBy(p=> p.Name).ThenBy(p=> p.ID);
+                .Order(ordering);
             stop.Stop();
-            var tttt = 12;
         }
 
         
-        private List<ItemsClass> ExpressionMode()
+        private IQueryable<ItemsClass> ExpressionMode()
         {
             FilterInput[] filters = new[]
             {
                 new FilterInput()
                 {
-                    Operation = OperationTypeEnum.LessThan,
+                    Operation = OperationTypeEnum.NotEqual,
                     Property = "Date",
-                    Value = new []{"2017/04/06" ,"2017/04/07","2017/04/08","2017/04/09","2017/04/10"},
+                    Value = new []{"2017/04/06"},
                     Type = InputTypeEnum.String
                 }
             };
             try
             {
-                return items.Filter(filters).ToList();
+                return items.Filter(filters);
             }
             catch (Exception e)
             {

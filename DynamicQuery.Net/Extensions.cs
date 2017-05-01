@@ -15,5 +15,21 @@ namespace DynamicQuery.Net
         {
             return FilterService.Filter(input, filterinput);
         }
+
+        public static IOrderedQueryable<T> Filter<T>(this IQueryable<T> input, OrderFilterInput orderFilterInput)
+        {
+            return input.Filter(orderFilterInput.Filter).Order(orderFilterInput.Order);
+        }
+
+        public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, OrderInput orderInput)
+        {
+            return OrderService.Ordering(input , orderInput);
+        }
+
+        public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, OrderInput[] orderInput)
+        {
+            return OrderService.Ordering(input , orderInput);
+        }
+
     }
 }
