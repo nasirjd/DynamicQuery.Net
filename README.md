@@ -11,8 +11,6 @@ if you search at this subject you will find  [DynamicQuery](https://www.nuget.or
 $ Install-Package DynamicQuery.Net
 ```
 
-# What you can do:
-
 ## Dynamic Filtering:
 
 ### Creating FilterInput object:
