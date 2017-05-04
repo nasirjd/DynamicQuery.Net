@@ -47,10 +47,10 @@ namespace DynamicQuery.Net.Presentation
 
             var orderItem = new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"};
 
-            var result1 = ExpressionMode()
+            var result1 = ExpressionMode();
                 //.Ordering("Date", "OrderBy");
                 //.OrderByDescending(p => p.Date).ThenBy(p=> p.Name).ThenBy(p=> p.ID);
-                .Order(ordering);
+                //.Order(ordering);
             stop.Stop();
         }
 
@@ -69,7 +69,11 @@ namespace DynamicQuery.Net.Presentation
             };
             try
             {
-                return items.Filter(filters);
+                var orderFilter = new OrderFilterInput
+                {
+                    Filter = filters
+                };
+                return items.Filter(orderFilter);
             }
             catch (Exception e)
             {
