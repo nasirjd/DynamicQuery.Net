@@ -10,43 +10,37 @@ namespace DynamicQuery.Net.Utility
 
         public Expression Equal<T>(CompareInput input)
         {
-            var value = Expression.Constant(input.Value);
-            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, value);
+            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, input.Value);
             return Expression.Equal(compare, Expression.Constant(_equalNumber));
         }
 
         public Expression NotEqual<T>(CompareInput input)
         {
-            var value = Expression.Constant(input.Value);
-            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, value);
+            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, input.Value);
             return Expression.NotEqual(compare, Expression.Constant(_equalNumber));
         }
 
         public Expression GreaterThan<T>(CompareInput input)
         {
-            var value = Expression.Constant(input.Value);
-            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, value);
+            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, input.Value);
             return Expression.GreaterThan(compare, Expression.Constant(_equalNumber));
         }
 
         public Expression GreaterThanOrEqual<T>(CompareInput input)
         {
-            var value = Expression.Constant(input.Value);
-            var compare = Expression.Call(typeof(string), "Compare", null, new[] { (Expression)input.Property, value });
+            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, input.Value);
             return Expression.GreaterThanOrEqual(compare, Expression.Constant(_equalNumber));
         }
 
         public Expression LessThan<T>(CompareInput input)
         {
-            var value = Expression.Constant(input.Value);
-            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, value);
+            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, input.Value);
             return Expression.LessThan(compare, Expression.Constant(_equalNumber));
         }
 
         public Expression LessThanOrEqual<T>(CompareInput input)
-        {
-            var value = Expression.Constant(input.Value);
-            var compare = Expression.Call(typeof(string), "Compare", null, new[] { (Expression)input.Property, value });
+        {   
+            var compare = Expression.Call(typeof(string), "Compare", null, input.Property, input.Value);
             return Expression.LessThanOrEqual(compare, Expression.Constant(_equalNumber));
         }
     }

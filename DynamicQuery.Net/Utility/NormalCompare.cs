@@ -8,38 +8,32 @@ namespace DynamicQuery.Net.Utility
     {
         public Expression Equal<T>(CompareInput input)
         {
-            var valueExpr = Expression.Constant(input.Value);
-            return Expression.Equal(input.Property, valueExpr);
+            return Expression.Equal(input.Property, Expression.Convert(input.Value , input.Property.Type));
         }
 
         public Expression NotEqual<T>(CompareInput input)
         {
-            var valueExpr = Expression.Constant(input.Value);
-            return Expression.NotEqual(input.Property, valueExpr);
+            return Expression.NotEqual(input.Property, Expression.Convert(input.Value , input.Property.Type));
         }
 
         public Expression GreaterThan<T>(CompareInput input)
         {
-            var valueExpr = Expression.Constant(input.Value);
-            return Expression.GreaterThan(input.Property, valueExpr);
+            return Expression.GreaterThan(input.Property, Expression.Convert(input.Value , input.Property.Type));
         }
 
         public Expression GreaterThanOrEqual<T>(CompareInput input)
         {
-            var valueExpr = Expression.Constant(input.Value);
-            return Expression.GreaterThanOrEqual(input.Property, valueExpr);
+            return Expression.GreaterThanOrEqual(input.Property, Expression.Convert(input.Value , input.Property.Type));
         }
 
         public Expression LessThan<T>(CompareInput input)
         {
-            var valueExpr = Expression.Constant(input.Value);
-            return Expression.LessThan(input.Property, valueExpr);
+            return Expression.LessThan(input.Property, Expression.Convert(input.Value , input.Property.Type));
         }
 
         public Expression LessThanOrEqual<T>(CompareInput input)
         {
-            var valueExpr = Expression.Constant(input.Value);
-            return Expression.LessThanOrEqual(input.Property, valueExpr);
+            return Expression.LessThanOrEqual(input.Property, Expression.Convert(input.Value , input.Property.Type));
         }
     }
 }

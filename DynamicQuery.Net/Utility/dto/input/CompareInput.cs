@@ -6,6 +6,6 @@ namespace DynamicQuery.Net.Utility.dto.input
     {
         public ParameterExpression Parameter { get; set; }
         public MemberExpression Property { get; set; }
-        public object Value { get; set; }
+        public ConstantExpression Value { get; set; }
     }
 }

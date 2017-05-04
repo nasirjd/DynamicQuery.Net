@@ -61,6 +61,7 @@ namespace DynamicQuery.Net.Services
                                                     ParameterExpression parameter)
         {
             var property = Expression.Property(parameter, filterInput.Property);
+            var value = Expression.Constant(filterInput.Value);
 
             ICompare compare;
             switch (filterInput.Type)
@@ -81,7 +82,7 @@ namespace DynamicQuery.Net.Services
             {
                 Parameter = parameter,
                 Property = property,
-                Value = filterInput.Value
+                Value = value
             };
 
             Expression resultExpr;
