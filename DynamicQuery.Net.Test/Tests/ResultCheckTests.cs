@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -208,6 +209,32 @@ namespace DynamicQuery.Net.Test.Tests
             var normalResult = Mock.QueryableItems
                         .OrderByDescending(p => p.Date)
                         .ThenByDescending(p => p.Name);
+
+            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+        }
+
+
+        [TestMethod]
+        public void Filter_Order_WhenJustOrderIsPassed_AndItsPropertyIsInteger_ShouldReturnOrderedQueryable()
+        {
+            var orderInput = new[]
+           {
+                new OrderInput
+                {
+                    Property = "Number",
+                    Order = OrderTypeEnum.Desc
+                }
+            };
+
+            var orderFilterInput = new OrderFilterInput
+            {
+                Order = orderInput
+            };
+
+            var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
+
+            var normalResult = Mock.QueryableItems
+                        .OrderByDescending(p => p.Number);
 
             AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
         }
