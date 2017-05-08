@@ -9,28 +9,28 @@ namespace DynamicQuery.Net
     {
         public static IQueryable<T> Filter<T>(this IQueryable<T> input , FilterInput[] filterInputs)
         {
-            return FilterService.Filter(input, filterInputs);
+            return filterInputs != null ? FilterService.Filter(input, filterInputs) : input;
         }
 
         public static IQueryable<T> Filter<T>(this IQueryable<T> input, FilterInput filterinput)
         {
-            return FilterService.Filter(input, filterinput);
+            return filterinput !=null ? FilterService.Filter(input, filterinput) : input;
         }
 
         public static IOrderedQueryable<T> Filter<T>(this IQueryable<T> input, OrderFilterInput orderFilterInput)
         {
-            var result = input.Filter(orderFilterInput.Filter);
-                return orderFilterInput.Order == null ? (IOrderedQueryable<T>)result : result.Order(orderFilterInput.Order);
+            return (IOrderedQueryable<T>) (orderFilterInput != null ?
+                input.Filter(orderFilterInput.Filter).Order(orderFilterInput.Order) : input);
         }
 
         public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, OrderInput orderInput)
         {
-            return OrderService.Ordering(input , orderInput);
+            return orderInput !=null ? OrderService.Ordering(input , orderInput) : (IOrderedQueryable<T>)input;
         }
 
         public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, OrderInput[] orderInput)
         {
-            return OrderService.Ordering(input , orderInput);
+            return orderInput !=null ? OrderService.Ordering(input , orderInput) : (IOrderedQueryable<T>)input;
         }
 
     }

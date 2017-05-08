@@ -54,7 +54,7 @@ namespace DynamicQuery.Net.Services
         {
             var parameter = Expression.Parameter(typeof(T), "p");
             return input
-                .Where(Expression.Lambda<Func<T, bool>>(FilterExpression<T>(filterInput, parameter)));
+                .Where(Expression.Lambda<Func<T, bool>>(FilterExpression<T>(filterInput, parameter), parameter));
         }
 
         private static Expression FilterExpression<T>(FilterInput filterInput,
