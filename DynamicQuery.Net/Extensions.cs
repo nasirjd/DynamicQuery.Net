@@ -22,6 +22,11 @@ namespace DynamicQuery.Net
             return (IOrderedQueryable<T>) (orderFilterInput != null ?
                 input.Filter(orderFilterInput.Filter).Order(orderFilterInput.Order) : input);
         }
+        public static IOrderedQueryable<T> Filter<T>(this IQueryable<T> input, OrderFilterNonFilterInput orderFilterInput)
+        {
+            return (IOrderedQueryable<T>) (orderFilterInput != null ?
+                input.Filter(orderFilterInput.Filter).Order(orderFilterInput.Order) : input);
+        }
 
         public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, OrderInput orderInput)
         {

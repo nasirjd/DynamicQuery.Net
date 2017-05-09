@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.CodeDom;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
@@ -218,7 +220,7 @@ namespace DynamicQuery.Net.Test.Tests
         public void Filter_Order_WhenJustOrderIsPassed_AndItsPropertyIsInteger_ShouldReturnOrderedQueryable()
         {
             var orderInput = new[]
-           {
+            {
                 new OrderInput
                 {
                     Property = "Number",
@@ -226,14 +228,68 @@ namespace DynamicQuery.Net.Test.Tests
                 }
             };
 
-            var orderFilterInput = new OrderFilterInput
+            var orderFilterInput = new OrderFilterNonFilterInput()
             {
                 Order = orderInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
 
-            var normalResult = Mock.QueryableItems
+            var normalResult = Mock.QueryableItems.OrderByDescending(p => p.Number);
+
+            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+        }
+
+        [TestMethod]
+        public void Filter_Order_WhenOrderFilterNonFilterInputIsPassed_ShouldReturnOrderedQueryable()
+        {
+
+            FilterInput[] filterInput = {
+              new FilterInput()
+                {
+                    Operation = OperationTypeEnum.GreaterThanOrEqual,
+                    Property = "Date",
+                    Value = "2017/04/07",
+                    Type = InputTypeEnum.String
+                },
+                new FilterInput()
+                {
+                    Operation = OperationTypeEnum.LessThanOrEqual,
+                    Property = "Date",
+                    Value = "2017/04/10",
+                    Type = InputTypeEnum.String
+                }
+            };
+
+
+            var nonFilterInput = new Dictionary<string, object>
+            {
+                {"TestName1", "TestValue1"},
+                {"TestName2", "TestValue2"},
+                {"TestName3", "TestValue3"}
+            };
+
+
+            var orderInput = new[]
+             {
+                new OrderInput
+                {
+                    Property = "Number",
+                    Order = OrderTypeEnum.Desc
+                }
+            };
+
+            var orderFilterInput = new OrderFilterNonFilterInput()
+            {
+                Order = orderInput,
+                Filter = filterInput,
+                NonFilter = nonFilterInput
+            };
+
+            var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
+
+            var normalResult = Mock.QueryableItems.Where(p => (string.Compare(p.Date, "2017/04/07") >= 0)
+                        && (string.Compare(p.Date, "2017/04/10") <= 0))
                         .OrderByDescending(p => p.Number);
 
             AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
