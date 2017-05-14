@@ -13,7 +13,8 @@ $ Install-Package DynamicQuery.Net
 
 ## Dynamic Filtering:
 
-### Creating FilterInput object:
+Creating FilterInput object:
+
 ```cs
 var filerInput = new FilterInput
                 {
@@ -46,7 +47,7 @@ var filerInput = new List<FilterInput>
                     Operation = OperationTypeEnum.NotEqual,
                     Property = "ClassNo",
                     Type = InputTypeEnum.Number,
-                    Value = new[]{2,3,4}
+                    Value = new List<object>{2,3,4}
                 }
             };
 ```
@@ -62,14 +63,14 @@ myQueryable = myQueryable.Filter(filerInput);
 
 ## Dynamic Ordering
 
-### Creating OrderInput object:
+Creating OrderInput object:
 
-#### For a single field:
+For a single field:
 ```cs
  var orderItem = new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"};
 ```
 
-#### For a List of fields:
+For a List of fields:
 
 ```cs
  var orderInput = new List<OrderInput>
@@ -80,7 +81,7 @@ myQueryable = myQueryable.Filter(filerInput);
             };
 ```
 
-### Using OrderInput object:
+Using OrderInput object:
 
 ```cs
 myQueryable = myQueryable.Order(orderInput);
