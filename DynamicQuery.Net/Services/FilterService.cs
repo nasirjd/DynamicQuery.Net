@@ -1,4 +1,6 @@
 ﻿using System;
+using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -19,27 +21,9 @@ namespace DynamicQuery.Net.Services
              Expression resultExpr = Expression.Constant(true);
             foreach (var filterInput in filterInputs)
             {
-                if (filterInput.Value.GetType().IsArray)
+                if (filterInput.Value is IEnumerable<object>)
                 {
-                    var values = filterInput.Value as object[];
-                    if (values == null) return dataInput;
-                    Expression valueArrayExpression = null;
-                    foreach (var value in values)
-                    {
-                        filterInput.Value = value;
-                        if (valueArrayExpression == null)
-                        {
-                            valueArrayExpression = FilterExpression<T>(filterInput, parameter);
-                            continue;
-                        }
-
-                        if (filterInput.Operation == OperationTypeEnum.NotEqual)
-                            valueArrayExpression = Expression.AndAlso(valueArrayExpression,
-                                FilterExpression<T>(filterInput, parameter));
-                        else
-                            valueArrayExpression = Expression.OrElse(valueArrayExpression,
-                                FilterExpression<T>(filterInput, parameter));
-                    }
+                    var valueArrayExpression = MultipleValueHandleExpression<T>(filterInput, parameter);
                     if(valueArrayExpression !=null)
                     resultExpr = Expression.AndAlso(resultExpr , valueArrayExpression);
                 }
@@ -51,10 +35,18 @@ namespace DynamicQuery.Net.Services
             return dataInput.Where(Expression.Lambda<Func<T, bool>>(resultExpr, parameter));
         }
 
-        public static IQueryable<T> Filter<T>(IQueryable<T> input, FilterInput filterInput)
+        public static IQueryable<T> Filter<T>(IQueryable<T> dataInput, FilterInput filterInput)
         {
             var parameter = Expression.Parameter(typeof(T), "p");
-            return input
+
+            if (filterInput.Value is IEnumerable<object>)
+            {
+                var valueArrayExpression = MultipleValueHandleExpression<T>(filterInput, parameter);
+                if (valueArrayExpression != null)
+                    return dataInput.Where(Expression.Lambda<Func<T,bool>>(valueArrayExpression, parameter));
+            }
+
+            return dataInput
                 .Where(Expression.Lambda<Func<T, bool>>(FilterExpression<T>(filterInput, parameter), parameter));
         }
 
@@ -114,5 +106,30 @@ namespace DynamicQuery.Net.Services
             return resultExpr;
         }
 
+
+        private static Expression MultipleValueHandleExpression<T>(FilterInput filterInput , ParameterExpression parameter)
+        {
+            var values = filterInput.Value as IEnumerable<object>;
+            if (values == null) return null;
+
+            Expression valueArrayExpression = null;
+            foreach (var value in values)
+            {
+                filterInput.Value = value;
+                if (valueArrayExpression == null)
+                {
+                    valueArrayExpression = FilterExpression<T>(filterInput, parameter);
+                    continue;
+                }
+
+                if (filterInput.Operation == OperationTypeEnum.NotEqual)
+                    valueArrayExpression = Expression.AndAlso(valueArrayExpression,
+                        FilterExpression<T>(filterInput, parameter));
+                else
+                    valueArrayExpression = Expression.OrElse(valueArrayExpression,
+                        FilterExpression<T>(filterInput, parameter));
+            }
+            return valueArrayExpression;
+        }
     }
 }

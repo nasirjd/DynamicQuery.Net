@@ -31,28 +31,10 @@ namespace DynamicQuery.Net
 
         public static IOrderedQueryable<T> Filter<T>(this IQueryable<T> input, DynamicQueryNetInput dynamicInput)
         {
-            if (dynamicInput == null) return (IOrderedQueryable<T>) input;
-
-            input = input.Filter(dynamicInput.Filter);
-
-            if (dynamicInput.Paging != null)
-            {
-                if (dynamicInput.Order != null)
-                {
-                    input = input.Order(dynamicInput.Order)
-                        .Skip(dynamicInput.Paging.Page 
-                              * dynamicInput.Paging.Size).Take(dynamicInput.Paging.Size);
-                }
-            }
-            else
-            {
-                input = input.Order(dynamicInput.Order);
-            }
-            
-            return (IOrderedQueryable<T>) input;
-
+            return dynamicInput !=null? 
+                input.Filter(dynamicInput.Filter).Order(dynamicInput.Order).Paging(dynamicInput.Paging) 
+                :(IOrderedQueryable<T>) input;
         }
-
 
         public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, OrderInput orderInput)
         {
@@ -64,5 +46,14 @@ namespace DynamicQuery.Net
             return orderInput !=null ? OrderService.Ordering(input , orderInput) : (IOrderedQueryable<T>)input;
         }
 
+        public static IQueryable<T> Paging<T>(this IQueryable<T> input, PagingInput paging)
+        {
+            return paging != null ? input.Skip(paging.Page * paging.Size).Take(paging.Size) : input;
+        }
+
+        public static IOrderedQueryable<T> Paging<T>(this IOrderedQueryable<T> input, PagingInput paging)
+        {
+            return (IOrderedQueryable<T>) (paging != null ? input.Skip(paging.Page * paging.Size).Take(paging.Size) : input);
+        }
     }
 }

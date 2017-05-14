@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>DynamicQuery.Net</id>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 	<title>DynamicQuery.Net</title>
     <authors>Nasir Jafarzadeh</authors>
     <owners>NJafarzadeh</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>It enables you to make dynamic filtered, sorted and paged IQueryables easily with .Filter() Extension Method.
-	check out "Project Site" (on Github) for more details.
+	check out "Project Site" on Github for more details.
 	</description>
-	<projectUrl>https://github.com/NasirJafarzadeh/DynamicQuery.Net</projectUrl>
+	<projectUrl>https://nasirjafarzadeh.github.io/DynamicQuery.Net</projectUrl>
     <copyright>Copyright 2017</copyright>
     <tags>DynamicQuery DynamicQuery.Net IQueryables Query Dynamic Filter Expression ExpressionApi </tags>
   </metadata>

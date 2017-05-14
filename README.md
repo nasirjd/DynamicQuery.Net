@@ -23,9 +23,9 @@ var filerInput = new FilterInput
                     Value = "2017/04/08"
                 };
 ```
-if you want to filter more than one field , you can create an array of FilterInput objects
+if you want to filter more than one field , you can create a List of FilterInput objects
 ```cs
-var filerInput = new FilterInput[]
+var filerInput = new List<FilterInput>
             {
                 new FilterInput
                 {
@@ -37,9 +37,9 @@ var filerInput = new FilterInput[]
             };
 ```
 
-if you want to have more than one value for a single field, you can feed Value with an array: 
+if you want to have more than one value for a single field, you can feed Value with a List: 
 ```cs
-var filerInput = new FilterInput[]
+var filerInput = new List<FilterInput>
             {
                 new FilterInput
                 {
@@ -69,10 +69,10 @@ myQueryable = myQueryable.Filter(filerInput);
  var orderItem = new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"};
 ```
 
-#### For an array of fields:
+#### For a List of fields:
 
 ```cs
- var orderInput = new[]
+ var orderInput = new List<OrderInput>
             {
                 new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"},
                 new OrderInput {Order = OrderTypeEnum.Asc, Property = "Name"},
@@ -99,7 +99,59 @@ var orderFilterInput = new OrderFilterInput
                
  myQueryable = myQueryable.Filter(orderFilterInput); 
 ```
-In this release OrderFilterInput properties just supports array of objects.
+
+## OrderFilterNonFilterInput 
+
+If you want to send some objects to the server that you won't use it as a Filter in IQueryable, you can use NonFilter Dictionary.
+
+```cs
+
+var nonFilterInput = new Dictionary<string, string>
+            {
+                {"TestName1", "TestValue1"},
+                {"TestName2", "TestValue2"},
+                {"TestName3", "TestValue3"}
+            };
+
+            var orderFilterNonFilterInput = new OrderFilterNonFilterInput()
+            {
+                Order = orderInput,
+                Filter = filterInput,
+                NonFilter = nonFilterInput
+            };
+		myQueryable = myQueryable.Filter(orderFilterNonFilterInput);
+```
+
+## PagingInput
+
+If you want to use paging in your filtering you can use PagingInput object :
+
+```cs
+ var paging = new PagingInput
+            {
+                Page = 2,
+                Size = 10
+            };
+			
+	myQueryable = myQueryable.Paging(paging);
+```
+
+## DynamicQueryNetInput
+
+All of the above-mentioned capabilities can be achieved by using a DynamicQueryNetInput object as a parameter to the Filter() extension method:
+
+```cs
+         var dynamicQueryNetInput = new DynamicQueryNetInput()
+            {
+                Order = orderInput,
+                Filter = filterInput,
+                NonFilter = nonFilterInput,
+                Paging = paging
+            };
+			
+	myQueryable = myQueryable.Filter(dynamicQueryNetInput);
+	
+```
 
 
 ## Create simple REST APIs:
@@ -107,19 +159,23 @@ In this release OrderFilterInput properties just supports array of objects.
 ### In the client side send a JSON to the server:
 
 ```json
-{
-    "Filter":[{"Property":"Date" , "Value":"2017/04/07" , "Type":"String" , "Operation":"GreaterThan"}],
-    "Order":[{"Property":"Date" , "Order":"Desc"},{"Property":"ID" , "Order":"Desc"}]
-}
+	{
+      "Filter":[{"Property":"ContactNumber" , "Value":[61,2,5,7,22] , "Type":"Number" , "Operation":"Equal"}],
+    	"Order":[{"Property":"Date" , "Order":"Desc"}],
+    	"NonFilter":{"Calculate":"True"},
+        "Paging":{"Page":3 , "Size":10}
+	}
 ```
 
 ### In the server just use it in .Filter() Method:
 
 ```cs
-  public HttpResponseMessage Filter(OrderFilterInput orderFilterInput)
+  public HttpResponseMessage Filter(DynamicQueryNetInput dynamicQueryNetInput)
   {
-      return Request.CreateResponse(HttpStatusCode.OK, myQueryable.Filter(orderFilterInput));
+      return Request.CreateResponse(HttpStatusCode.OK, myQueryable.Filter(dynamicQueryNetInput));
   }
 ```
 
-I Hope this will be Helpful
+<p align="center">
+### I Hope this will be Helpful
+</p>
