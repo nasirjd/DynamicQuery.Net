@@ -52,7 +52,7 @@ var filerInput = new List<FilterInput>
             };
 ```
 
-### Using FilterInput object
+Using FilterInput object
 
 Now we can use our filterInput variable:
 
@@ -89,7 +89,7 @@ myQueryable = myQueryable.Order(orderInput);
 
 ## Both of Filtering and Ordering:
 
-### Creating and Using OrderFilterInput object
+Creating and Using OrderFilterInput object
 
 ```cs
 var orderFilterInput = new OrderFilterInput 
@@ -157,7 +157,7 @@ All of the above-mentioned capabilities can be achieved by using a DynamicQueryN
 
 ## Create simple REST APIs:
 
-### In the client side send a JSON to the server:
+ In the client side send a JSON to the server:
 
 ```json
 	{
@@ -168,7 +168,7 @@ All of the above-mentioned capabilities can be achieved by using a DynamicQueryN
 	}
 ```
 
-### In the server just use it in .Filter() Method:
+ In the server just use it in .Filter() Method:
 
 ```cs
   public HttpResponseMessage Filter(DynamicQueryNetInput dynamicQueryNetInput)
