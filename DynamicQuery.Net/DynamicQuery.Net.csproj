@@ -41,9 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\Input\DynamicQueryNetInput.cs" />
     <Compile Include="Dto\Input\OrderFilterInput.cs" />
     <Compile Include="Dto\Input\OrderFilterNonFilterInput.cs" />
     <Compile Include="Dto\Input\OrderInput.cs" />
+    <Compile Include="Dto\Input\Paging.cs" />
     <Compile Include="Enums\InputTypeEnum.cs" />
     <Compile Include="Dto\Input\FilterInput.cs" />
     <Compile Include="Enums\OperationTypeEnum.cs" />

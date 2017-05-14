@@ -8,8 +8,8 @@ namespace DynamicQuery.Net.Dto.Input
 {
      public class OrderFilterNonFilterInput
     {
-        public OrderInput[] Order { get; set; }
-        public FilterInput[] Filter { get; set; }
-        public Dictionary<string,object> NonFilter { get; set; }
+        public List<OrderInput> Order { get; set; }
+        public List<FilterInput> Filter { get; set; }
+        public Dictionary<string,string> NonFilter { get; set; }
     }
 }

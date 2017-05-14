@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DynamicQuery.Net.Dto.Input
 {
-    public class OrderFilterInput
+    public class Paging
     {
-        public List<FilterInput> Filter { get; set; }
-        public List<OrderInput> Order { get; set; }
+        public int Page { get; set; }
+        public int Size { get; set; }
     }
 }

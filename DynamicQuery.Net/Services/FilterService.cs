@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using DynamicQuery.Net.Dto.Input;
@@ -12,7 +13,7 @@ namespace DynamicQuery.Net.Services
     public class FilterService
     {
 
-        public static IQueryable<T> Filter<T>(IQueryable<T> dataInput, FilterInput[] filterInputs)
+        public static IQueryable<T> Filter<T>(IQueryable<T> dataInput, List<FilterInput> filterInputs)
         {
             var parameter = Expression.Parameter(typeof(T), "p");
              Expression resultExpr = Expression.Constant(true);

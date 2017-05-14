@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,9 +18,9 @@ namespace DynamicQuery.Net.Test
         }
 
         [TestMethod]
-        public void Filter_WhenArrayOfFilterInputsAreNull_ShouldReturnPrimaryQueryable()
+        public void Filter_WhenListOfFilterInputsAreNull_ShouldReturnPrimaryQueryable()
         {
-            FilterInput[] filterInput = null;
+            List<FilterInput> filterInput = null;
             var queryable =  Mock.QueryableItems.Filter(filterInput);
             Assert.AreEqual(queryable, Mock.QueryableItems);
         }
@@ -35,9 +36,9 @@ namespace DynamicQuery.Net.Test
 
 
         [TestMethod]
-        public void Order_WhenArrayOfOrderInputsAreNull_ShouldReturnPrimaryQueryable()
+        public void Order_WhenListOfOrderInputsAreNull_ShouldReturnPrimaryQueryable()
         {
-            OrderInput[] orderInput = null;
+            List<OrderInput> orderInput = null;
             var queryable =  Mock.QueryableItems.Order(orderInput);
             Assert.AreEqual(queryable, Mock.QueryableItems);
         }
