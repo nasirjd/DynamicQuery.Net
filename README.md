@@ -161,7 +161,7 @@ All of the above-mentioned capabilities can be achieved by using a DynamicQueryN
 
 ```json
 	{
-      "Filter":[{"Property":"ContactNumber" , "Value":[61,2,5,7,22] , "Type":"Number" , "Operation":"Equal"}],
+      "Filter":[{"Property":"ContactNumber" , "Value":2 , "Type":"Number" , "Operation":"Equal"}],
     	"Order":[{"Property":"Date" , "Order":"Desc"}],
     	"NonFilter":{"Calculate":"True"},
         "Paging":{"Page":3 , "Size":10}
