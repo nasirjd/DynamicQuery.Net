@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -73,7 +71,6 @@ namespace DynamicQuery.Net.Services
 
             var compareInput = new CompareInput
             {
-                Parameter = parameter,
                 Property = property,
                 Value = value
             };
@@ -98,6 +95,9 @@ namespace DynamicQuery.Net.Services
                     break;
                 case OperationTypeEnum.LessThanOrEqual:
                     resultExpr = compare.LessThanOrEqual<T>(compareInput);
+                    break;
+                case OperationTypeEnum.Contains:
+                    resultExpr = compare.Contains<T>(compareInput);
                     break;
                 default:
                     resultExpr = compare.Equal<T>(compareInput);

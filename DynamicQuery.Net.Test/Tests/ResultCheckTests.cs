@@ -1,10 +1,12 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 
 namespace DynamicQuery.Net.Test.Tests
 {
@@ -38,12 +40,12 @@ namespace DynamicQuery.Net.Test.Tests
                 {
                     Operation = OperationTypeEnum.NotEqual,
                     Property = "Date",
-                    Value = new List<object> {"2017/04/07", "2017/04/08" },
+                    Value = new List<object> { "2017/04/07", "2017/04/08" },
                     Type = InputTypeEnum.String
                 };
 
             var filteredResult = Mock.QueryableItems.Filter(filterInput);
-            var normalResult = Mock.QueryableItems.Where(p => string.Compare(p.Date, "2017/04/07") != 0 && 
+            var normalResult = Mock.QueryableItems.Where(p => string.Compare(p.Date, "2017/04/07") != 0 &&
             string.Compare(p.Date, "2017/04/08") != 0);
 
             AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
@@ -102,7 +104,7 @@ namespace DynamicQuery.Net.Test.Tests
                 .Where(p => ((string.Compare(p.Date, "2017/04/07") == 0)
                          || (string.Compare(p.Date, "2017/04/08") == 0)
                          || (string.Compare(p.Date, "2017/04/09") == 0)
-                         || (string.Compare(p.Date, "2017/04/10") == 0)) 
+                         || (string.Compare(p.Date, "2017/04/10") == 0))
                          && (string.Compare(p.Date, "2017/04/09") >= 0)
                          );
 
@@ -525,6 +527,51 @@ namespace DynamicQuery.Net.Test.Tests
                         && (string.Compare(p.Date, "2017/04/10") <= 0)).Skip(2 * 2).Take(2);
 
             AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+        }
+
+
+        [TestMethod]
+        public void Order_Filter_Paging_WhenValueIsOfTypeJValue_ReturnIQueryableWithoutBug()
+        {
+            //Value = new Newtonsoft.Json.Linq.JArray(new[] { 61, 2, 5, 7, 22 }),
+            var filterInput = new List<FilterInput>{
+            new FilterInput
+            {
+                Operation = OperationTypeEnum.Equal,
+                Property = "Number",
+                Value = new[]{61,2,5,7,22},
+                Type = InputTypeEnum.Number
+            }
+            };
+
+            var dynamicQueryNetInput = new DynamicQueryNetInput
+            {
+                Filter = filterInput
+            };
+
+            Mock.QueryableItems.Filter(dynamicQueryNetInput);
+        }
+
+        [TestMethod]
+        public void Filter_WhenOperationIsContains_ReturnContainedData()
+        {
+            var filterInput = new List<FilterInput>{
+            new FilterInput
+            {
+                Operation = OperationTypeEnum.Contains,
+                Property = "Date",
+                Value = "10",
+                Type = InputTypeEnum.String
+            }
+            };
+
+            var dynamicQueryNetInput = new DynamicQueryNetInput
+            {
+                Filter = filterInput
+            };
+
+          Mock.QueryableItems.Filter(dynamicQueryNetInput);
+           
         }
 
     }

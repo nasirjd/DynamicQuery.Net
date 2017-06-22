@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ErrorConstants.cs" />
     <Compile Include="Dto\Input\DynamicQueryNetInput.cs" />
     <Compile Include="Dto\Input\OrderFilterInput.cs" />
     <Compile Include="Dto\Input\OrderFilterNonFilterInput.cs" />

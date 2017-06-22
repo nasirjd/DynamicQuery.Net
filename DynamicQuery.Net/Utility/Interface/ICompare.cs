@@ -11,5 +11,6 @@ namespace DynamicQuery.Net.Utility.Interface
         Expression GreaterThanOrEqual<T>(CompareInput input);
         Expression LessThan<T>(CompareInput input);
         Expression LessThanOrEqual<T>(CompareInput input);
+        Expression Contains<T>(CompareInput input);
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
+using DynamicQuery.Net.Constants;
 using DynamicQuery.Net.Utility.dto.input;
 using DynamicQuery.Net.Utility.Interface;
 
@@ -34,6 +36,11 @@ namespace DynamicQuery.Net.Utility
         public Expression LessThanOrEqual<T>(CompareInput input)
         {
             return Expression.LessThanOrEqual(input.Property, Expression.Convert(input.Value , input.Property.Type));
+        }
+
+        public Expression Contains<T>(CompareInput input)
+        {
+            throw new Exception(ErrorConstants.OPERATION_NOT_ALLOWED);
         }
     }
 }
