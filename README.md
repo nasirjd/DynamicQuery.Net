@@ -13,7 +13,8 @@ $ Install-Package DynamicQuery.Net
 
 ## Dynamic Filtering:
 
-### Creating FilterInput object:
+Creating FilterInput object:
+
 ```cs
 var filerInput = new FilterInput
                 {
@@ -46,12 +47,12 @@ var filerInput = new List<FilterInput>
                     Operation = OperationTypeEnum.NotEqual,
                     Property = "ClassNo",
                     Type = InputTypeEnum.Number,
-                    Value = new[]{2,3,4}
+                    Value = new List<object>{2,3,4}
                 }
             };
 ```
 
-### Using FilterInput object
+Using FilterInput object
 
 Now we can use our filterInput variable:
 
@@ -62,14 +63,14 @@ myQueryable = myQueryable.Filter(filerInput);
 
 ## Dynamic Ordering
 
-### Creating OrderInput object:
+Creating OrderInput object:
 
-#### For a single field:
+For a single field:
 ```cs
  var orderItem = new OrderInput {Order = OrderTypeEnum.Desc, Property = "Date"};
 ```
 
-#### For a List of fields:
+For a List of fields:
 
 ```cs
  var orderInput = new List<OrderInput>
@@ -80,7 +81,7 @@ myQueryable = myQueryable.Filter(filerInput);
             };
 ```
 
-### Using OrderInput object:
+Using OrderInput object:
 
 ```cs
 myQueryable = myQueryable.Order(orderInput);
@@ -88,7 +89,7 @@ myQueryable = myQueryable.Order(orderInput);
 
 ## Both of Filtering and Ordering:
 
-### Creating and Using OrderFilterInput object
+Creating and Using OrderFilterInput object
 
 ```cs
 var orderFilterInput = new OrderFilterInput 
@@ -156,18 +157,18 @@ All of the above-mentioned capabilities can be achieved by using a DynamicQueryN
 
 ## Create simple REST APIs:
 
-### In the client side send a JSON to the server:
+ In the client side send a JSON to the server:
 
 ```json
 	{
-      "Filter":[{"Property":"ContactNumber" , "Value":[61,2,5,7,22] , "Type":"Number" , "Operation":"Equal"}],
+      "Filter":[{"Property":"ContactNumber" , "Value":2 , "Type":"Number" , "Operation":"Equal"}],
     	"Order":[{"Property":"Date" , "Order":"Desc"}],
     	"NonFilter":{"Calculate":"True"},
         "Paging":{"Page":3 , "Size":10}
 	}
 ```
 
-### In the server just use it in .Filter() Method:
+ In the server just use it in .Filter() Method:
 
 ```cs
   public HttpResponseMessage Filter(DynamicQueryNetInput dynamicQueryNetInput)
@@ -176,6 +177,6 @@ All of the above-mentioned capabilities can be achieved by using a DynamicQueryN
   }
 ```
 
-<p align="center">
-### I Hope this will be Helpful
-</p>
+
+ <h4 style="text-align: center;">I Hope this will be Helpful</h4>
+
