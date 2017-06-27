@@ -96,7 +96,7 @@ namespace DynamicQuery.Net.Services
                 case OperationTypeEnum.LessThanOrEqual:
                     resultExpr = compare.LessThanOrEqual<T>(compareInput);
                     break;
-                case OperationTypeEnum.Contains:
+                case OperationTypeEnum.Contain:
                     resultExpr = compare.Contains<T>(compareInput);
                     break;
                 default:

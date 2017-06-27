@@ -558,7 +558,7 @@ namespace DynamicQuery.Net.Test.Tests
             var filterInput = new List<FilterInput>{
             new FilterInput
             {
-                Operation = OperationTypeEnum.Contains,
+                Operation = OperationTypeEnum.Contain,
                 Property = "Date",
                 Value = "10",
                 Type = InputTypeEnum.String
