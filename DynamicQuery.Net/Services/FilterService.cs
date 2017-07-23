@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using DynamicQuery.Net.Dto.Input;
@@ -7,6 +9,9 @@ using DynamicQuery.Net.Enums;
 using DynamicQuery.Net.Utility;
 using DynamicQuery.Net.Utility.dto.input;
 using DynamicQuery.Net.Utility.Interface;
+using Newtonsoft.Json.Linq;
+
+//using Newtonsoft.Json.Linq;
 
 namespace DynamicQuery.Net.Services
 {
@@ -21,6 +26,7 @@ namespace DynamicQuery.Net.Services
             {
                 if (filterInput.Value is IEnumerable<object>)
                 {
+
                     var valueArrayExpression = MultipleValueHandleExpression<T>(filterInput, parameter);
                     if(valueArrayExpression !=null)
                     resultExpr = Expression.AndAlso(resultExpr , valueArrayExpression);
@@ -48,7 +54,7 @@ namespace DynamicQuery.Net.Services
                 .Where(Expression.Lambda<Func<T, bool>>(FilterExpression<T>(filterInput, parameter), parameter));
         }
 
-        private static Expression FilterExpression<T>(FilterInput filterInput,
+        public static Expression FilterExpression<T>(FilterInput filterInput,
                                                     ParameterExpression parameter)
         {
             var property = Expression.Property(parameter, filterInput.Property);
@@ -109,13 +115,17 @@ namespace DynamicQuery.Net.Services
 
         private static Expression MultipleValueHandleExpression<T>(FilterInput filterInput , ParameterExpression parameter)
         {
-            var values = filterInput.Value as IEnumerable<object>;
-            if (values == null) return null;
-
+            var stop = Stopwatch.StartNew();
             Expression valueArrayExpression = null;
+
+            var isJarray = JArrayUtil.IsJArray(filterInput.Value);
+
+            var values = filterInput.Value as IEnumerable<object>;
+            if (values == null) return Expression.Empty();
+
             foreach (var value in values)
             {
-                filterInput.Value = value;
+                filterInput.Value = isJarray? ((JValue)value).Value:value;
                 if (valueArrayExpression == null)
                 {
                     valueArrayExpression = FilterExpression<T>(filterInput, parameter);
@@ -129,7 +139,11 @@ namespace DynamicQuery.Net.Services
                     valueArrayExpression = Expression.OrElse(valueArrayExpression,
                         FilterExpression<T>(filterInput, parameter));
             }
+            stop.Stop();
+            Trace.Write(stop.ElapsedTicks);
             return valueArrayExpression;
         }
+
+        
     }
 }

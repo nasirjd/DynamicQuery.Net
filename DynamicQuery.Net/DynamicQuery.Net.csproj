@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,6 +59,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Utility\dto\input\CompareInput.cs" />
     <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Utility\JArrayUtil.cs" />
     <Compile Include="Utility\OrderingHelper.cs" />
     <Compile Include="Utility\Interface\ICompare.cs" />
     <Compile Include="Utility\NormalCompare.cs" />
@@ -63,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dto\Output\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

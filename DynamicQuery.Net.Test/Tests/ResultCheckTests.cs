@@ -533,13 +533,13 @@ namespace DynamicQuery.Net.Test.Tests
         [TestMethod]
         public void Order_Filter_Paging_WhenValueIsOfTypeJValue_ReturnIQueryableWithoutBug()
         {
-            //Value = new Newtonsoft.Json.Linq.JArray(new[] { 61, 2, 5, 7, 22 }),
+            
             var filterInput = new List<FilterInput>{
             new FilterInput
             {
                 Operation = OperationTypeEnum.Equal,
                 Property = "Number",
-                Value = new[]{61,2,5,7,22},
+                Value = new JArray(new[] { 61, 2, 5, 7, 22 }),
                 Type = InputTypeEnum.Number
             }
             };
