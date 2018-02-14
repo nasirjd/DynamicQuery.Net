@@ -9,8 +9,13 @@ if you search at this subject you will find  [DynamicQuery](https://www.nuget.or
 # How to use
 
 ## [Install Nuget Package](https://www.nuget.org/packages/DynamicQuery.Net)
+### From Package Manager
 ```
 $ Install-Package DynamicQuery.Net
+```
+### From .Net CLI
+```
+$ dotnet add package DynamicQuery.Net
 ```
 
 ## Dynamic Filtering:
