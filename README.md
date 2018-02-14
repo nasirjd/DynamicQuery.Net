@@ -1,5 +1,7 @@
 # DynamicQuery.Net
 
+## Finally! the package is ready for dotnet core 2.0
+
 for Querying an IQueryable in the normal approach you should write any predicates statically in your code, but if you want to have a dynamic Query you can use Expression Trees, this package used it!
 
 if you search at this subject you will find  [DynamicQuery](https://www.nuget.org/packages/DynamicQuery) that is so exhaustive, but in performance, this package is faster than that more than two hundred percent!
