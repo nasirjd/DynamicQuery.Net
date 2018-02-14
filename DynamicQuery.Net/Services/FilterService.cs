@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,8 +9,6 @@ using DynamicQuery.Net.Utility;
 using DynamicQuery.Net.Utility.dto.input;
 using DynamicQuery.Net.Utility.Interface;
 using Newtonsoft.Json.Linq;
-
-//using Newtonsoft.Json.Linq;
 
 namespace DynamicQuery.Net.Services
 {

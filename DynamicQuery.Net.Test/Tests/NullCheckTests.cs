@@ -1,55 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DynamicQuery.Net.Dto.Input;
-using DynamicQuery.Net.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace DynamicQuery.Net.Test
+namespace DynamicQuery.Net.Test.Tests
 {
-    [TestClass]
     public class NullCheckTests
     {
-        [TestMethod]
+        [Fact]
         public void Filter_WhenSingleFilterInputIsNull_ShouldReturnPrimaryQueryable()
         {
             FilterInput filterInput = null;
             var queryable =  Mock.QueryableItems.Filter(filterInput);
-            Assert.AreEqual(queryable, Mock.QueryableItems);
+            Assert.Equal(queryable, Mock.QueryableItems);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_WhenListOfFilterInputsAreNull_ShouldReturnPrimaryQueryable()
         {
             List<FilterInput> filterInput = null;
             var queryable =  Mock.QueryableItems.Filter(filterInput);
-            Assert.AreEqual(queryable, Mock.QueryableItems);
+            Assert.Equal(queryable, Mock.QueryableItems);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Order_WhenSingleOrderInputIsNull_ShouldReturnPrimaryQueryable()
         {
             OrderInput orderInput = null;
             var queryable =  Mock.QueryableItems.Order(orderInput);
-            Assert.AreEqual(queryable, Mock.QueryableItems);
+            Assert.Equal(queryable, Mock.QueryableItems);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Order_WhenListOfOrderInputsAreNull_ShouldReturnPrimaryQueryable()
         {
             List<OrderInput> orderInput = null;
             var queryable =  Mock.QueryableItems.Order(orderInput);
-            Assert.AreEqual(queryable, Mock.QueryableItems);
+            Assert.Equal(queryable, Mock.QueryableItems);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_WhenOrderFilterInputIsNull_ShouldReturnPrimaryQueryable()
         {
             OrderFilterInput filterInput = null;
             var queryable = Mock.QueryableItems.Filter(filterInput);
-            Assert.AreEqual(queryable, Mock.QueryableItems);
+            Assert.Equal(queryable, Mock.QueryableItems);
         }
 
     }

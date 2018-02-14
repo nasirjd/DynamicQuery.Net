@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DynamicQuery.Net.Test
 {
    public static class AssertUtil
     {
-        public static void QueryablesAreEqual<T>(IQueryable<T> firstQueryable , IQueryable<T> secondQueryable )
+        public static void EnumarableAreEqual<T>(IEnumerable<T> firstQueryable , IEnumerable<T> secondQueryable )
         {
             var firstList = firstQueryable.ToList();
             var secondList = secondQueryable.ToList();
 
-            Assert.AreEqual(firstList.Count, secondList.Count);
+            
+            Assert.Equal(firstList.Count, secondList.Count);
 
-            for (int i = 0; i < firstList.Count; i++)
+            for (var i = 0; i < firstList.Count; i++)
             {
-                Assert.AreEqual(firstList[i], secondList[i]);
+                Assert.Equal(firstList[i], secondList[i]);
             }
         }
     }

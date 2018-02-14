@@ -5,15 +5,14 @@ using System.Diagnostics;
 using System.Linq;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using Xunit;
 
 namespace DynamicQuery.Net.Test.Tests
 {
-    [TestClass]
     public class ResultCheckTests
     {
-        [TestMethod]
+        [Fact]
         public void Filter_WhenSingleFilterWithSingleInputIsPassed_ShouldReturnFilteredQueryable()
         {
             FilterInput filterInput =
@@ -28,11 +27,11 @@ namespace DynamicQuery.Net.Test.Tests
             var filteredResult = Mock.QueryableItems.Filter(filterInput);
             var normalResult = Mock.QueryableItems.Where(p => string.Compare(p.Date, "2017/04/07") != 0);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Filter_WhenSingleFilterWithMultipleInputIsPassed_ShouldReturnFilteredQueryable()
         {
             FilterInput filterInput =
@@ -48,10 +47,10 @@ namespace DynamicQuery.Net.Test.Tests
             var normalResult = Mock.QueryableItems.Where(p => string.Compare(p.Date, "2017/04/07") != 0 &&
             string.Compare(p.Date, "2017/04/08") != 0);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_WhenListOfFilterInputsWithSingleValueArePassed_ShouldReturnFilteredQueryable()
         {
             var filterInput = new List<FilterInput> {
@@ -75,10 +74,10 @@ namespace DynamicQuery.Net.Test.Tests
 
             var normalResult = Mock.QueryableItems.Where(p => (string.Compare(p.Date, "2017/04/07") >= 0) && (string.Compare(p.Date, "2017/04/10") <= 0));
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_WhenListOfFilterInputsWithMultipleValueArePassed_ShouldReturnFilteredQueryable()
         {
             var filterInput = new List<FilterInput> {
@@ -108,10 +107,10 @@ namespace DynamicQuery.Net.Test.Tests
                          && (string.Compare(p.Date, "2017/04/09") >= 0)
                          );
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Order_WhenSingleOrderInputIsPassed_ShouldReturnOrderedQueryable()
         {
             var orderInput = new OrderInput
@@ -124,10 +123,10 @@ namespace DynamicQuery.Net.Test.Tests
 
             var normalResult = Mock.QueryableItems.OrderByDescending(p => p.Date);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Order_WhenListOfOrderInputsArePassed_ShouldReturnOrderedQueryable()
         {
             var orderInput = new List<OrderInput>
@@ -148,10 +147,10 @@ namespace DynamicQuery.Net.Test.Tests
 
             var normalResult = Mock.QueryableItems.OrderByDescending(p => p.Date).ThenByDescending(p => p.Name);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_WhenOrderFilterInputIsPassed_ShouldReturnFilteredAndOrderedQueryable()
         {
             var filterInput = new List<FilterInput> {
@@ -199,11 +198,11 @@ namespace DynamicQuery.Net.Test.Tests
                         .OrderByDescending(p => p.Date)
                         .ThenByDescending(p => p.Name);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_WhenJustFilterIsPassed_ShouldReturnFilteredQueryable()
         {
             var filterInput = new List<FilterInput> {
@@ -235,10 +234,10 @@ namespace DynamicQuery.Net.Test.Tests
                 .Where(p => (string.Compare(p.Date, "2017/04/07") >= 0)
                         && (string.Compare(p.Date, "2017/04/10") <= 0));
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_WhenJustOrderIsPassed_ShouldReturnOrderedQueryable()
         {
 
@@ -267,11 +266,11 @@ namespace DynamicQuery.Net.Test.Tests
                         .OrderByDescending(p => p.Date)
                         .ThenByDescending(p => p.Name);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_WhenJustOrderIsPassed_AndItsPropertyIsInteger_ShouldReturnOrderedQueryable()
         {
             var orderInput = new List<OrderInput>
@@ -292,10 +291,10 @@ namespace DynamicQuery.Net.Test.Tests
 
             var normalResult = Mock.QueryableItems.OrderByDescending(p => p.Number);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_WhenOrderFilterNonFilterInputIsPassed_ShouldReturnOrderedQueryable()
         {
 
@@ -347,11 +346,11 @@ namespace DynamicQuery.Net.Test.Tests
                         && (string.Compare(p.Date, "2017/04/10") <= 0))
                         .OrderByDescending(p => p.Number);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_Paging_WhenDynamicQueryNetInputIsPassed_ShouldReturnOrderedQueryable()
         {
 
@@ -410,10 +409,10 @@ namespace DynamicQuery.Net.Test.Tests
                         && (string.Compare(p.Date, "2017/04/10") <= 0))
                         .OrderByDescending(p => p.Number).Skip(2 * 2).Take(2);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_Paging_WhenDynamicQueryNetInputIsPassed_PagingIsNull_ShouldReturnOrderedQueryable()
         {
 
@@ -465,10 +464,10 @@ namespace DynamicQuery.Net.Test.Tests
                         && (string.Compare(p.Date, "2017/04/10") <= 0))
                         .OrderByDescending(p => p.Number);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_Order_Paging_WhenDynamicQueryNetInputIsPassed_OrderIsNull_ShouldNotPagingTheResult()
         {
 
@@ -526,11 +525,11 @@ namespace DynamicQuery.Net.Test.Tests
             var normalResult = Mock.QueryableItems.Where(p => (string.Compare(p.Date, "2017/04/07") >= 0)
                         && (string.Compare(p.Date, "2017/04/10") <= 0)).Skip(2 * 2).Take(2);
 
-            AssertUtil.QueryablesAreEqual(filteredResult, normalResult);
+            AssertUtil.EnumarableAreEqual(filteredResult, normalResult);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Order_Filter_Paging_WhenValueIsOfTypeJValue_ReturnIQueryableWithoutBug()
         {
             
@@ -552,7 +551,7 @@ namespace DynamicQuery.Net.Test.Tests
             Mock.QueryableItems.Filter(dynamicQueryNetInput);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filter_WhenOperationIsContains_ReturnContainedData()
         {
             var filterInput = new List<FilterInput>{
