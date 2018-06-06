@@ -2,7 +2,7 @@
 
 ## Finally! the package is available for dotnet core 2.0
 
-Making query from the client side is an antipattern, but sometimes your project is a CRUD and you know that making a client-side query doesn't make a mess to your project, for these type of situations you can use DynamicQuery.Net.
+Making query from the client side is an antipattern, but sometimes your project is a [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and you know that making a client-side query doesn't make a mess to your project, for these type of situations you can use DynamicQuery.Net.
 
 # How to use
 
