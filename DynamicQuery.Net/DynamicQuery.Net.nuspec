@@ -10,7 +10,7 @@
     <description>It enables you to make dynamic filtered, sorted and paged IQueryables easily with .Filter() Extension Method.
 	check out "Project Site" on Github for more details.
 	</description>
-	<projectUrl>https://nasirjafarzadeh.github.io/DynamicQuery.Net</projectUrl>
+	<projectUrl>https://nasirjd.github.io/DynamicQuery.Net</projectUrl>
 	<iconUrl>https://image.ibb.co/k1Bink/Dynamic_Query_net.png</iconUrl>
     <copyright>Copyright 2017</copyright>
     <tags>DynamicQuery DynamicQuery.Net IQueryables Query Dynamic Filter Expression ExpressionApi </tags>
