@@ -4,6 +4,7 @@
     {
         Number,
         String,
-        Boolean
+        Boolean,
+        None = 20
     }
 }

@@ -42,5 +42,10 @@ namespace DynamicQuery.Net.Utility
         {
             throw new Exception(ErrorConstants.OPERATION_NOT_ALLOWED);
         }
+
+        public Expression StartsWith<T>(CompareInput input)
+        {
+            throw new Exception(ErrorConstants.OPERATION_NOT_ALLOWED);
+        }
     }
 }

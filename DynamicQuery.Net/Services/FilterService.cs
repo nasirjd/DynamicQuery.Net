@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using DynamicQuery.Net.Dto.Input;
 using DynamicQuery.Net.Enums;
 using DynamicQuery.Net.Utility;
@@ -12,31 +13,32 @@ using Newtonsoft.Json.Linq;
 
 namespace DynamicQuery.Net.Services
 {
-    public class FilterService
+    public static class FilterService
     {
+        private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod("ToString");
 
-        public static IQueryable<T> Filter<T>(IQueryable<T> dataInput, List<FilterInput> filterInputs)
+        public static IQueryable<T> FilterByInputs<T>(IQueryable<T> dataInput, IEnumerable<FilterInput> filterInputs,
+            OperationBetweenFiltersEnum operationBetweenFilters = OperationBetweenFiltersEnum.And)
         {
             var parameter = Expression.Parameter(typeof(T), "p");
-             Expression resultExpr = Expression.Constant(true);
+            
+            Expression resultExpr = Expression.Constant(operationBetweenFilters == OperationBetweenFiltersEnum.And);
             foreach (var filterInput in filterInputs)
             {
-                if (filterInput.Value is IEnumerable<object>)
-                {
+                Expression filterExpression = null;
+                filterExpression = filterInput.Value is IEnumerable<object>
+                    ? MultipleValueHandleExpression<T>(filterInput, parameter)
+                    : FilterExpression<T>(filterInput, parameter);
 
-                    var valueArrayExpression = MultipleValueHandleExpression<T>(filterInput, parameter);
-                    if(valueArrayExpression !=null)
-                    resultExpr = Expression.AndAlso(resultExpr , valueArrayExpression);
-                }
-                else
-                {
-                    resultExpr = Expression.AndAlso(resultExpr, FilterExpression<T>(filterInput, parameter));
-                }
+                resultExpr = operationBetweenFilters == OperationBetweenFiltersEnum.And
+                    ? Expression.AndAlso(resultExpr, filterExpression)
+                    : Expression.Or(resultExpr, filterExpression);
             }
+
             return dataInput.Where(Expression.Lambda<Func<T, bool>>(resultExpr, parameter));
         }
 
-        public static IQueryable<T> Filter<T>(IQueryable<T> dataInput, FilterInput filterInput)
+        public static IQueryable<T> FilterByInput<T>(IQueryable<T> dataInput, FilterInput filterInput)
         {
             var parameter = Expression.Parameter(typeof(T), "p");
 
@@ -44,39 +46,58 @@ namespace DynamicQuery.Net.Services
             {
                 var valueArrayExpression = MultipleValueHandleExpression<T>(filterInput, parameter);
                 if (valueArrayExpression != null)
-                    return dataInput.Where(Expression.Lambda<Func<T,bool>>(valueArrayExpression, parameter));
+                    return dataInput.Where(Expression.Lambda<Func<T, bool>>(valueArrayExpression, parameter));
             }
 
             return dataInput
                 .Where(Expression.Lambda<Func<T, bool>>(FilterExpression<T>(filterInput, parameter), parameter));
         }
 
-        public static Expression FilterExpression<T>(FilterInput filterInput,
-                                                    ParameterExpression parameter)
+        private static Expression FilterExpression<T>(FilterInput filterInput,
+            Expression parameter)
         {
             var property = Expression.Property(parameter, filterInput.Property);
             var value = Expression.Constant(filterInput.Value);
 
             ICompare compare;
-            switch (filterInput.Type)
+            CompareInput compareInput = null;
+
+            if (filterInput.Type == InputTypeEnum.Number &&
+                (filterInput.Operation == OperationTypeEnum.StartWith ||
+                 filterInput.Operation == OperationTypeEnum.Contain))
             {
-                case InputTypeEnum.Number:
-                case InputTypeEnum.Boolean:
-                    compare = new NormalCompare();
-                    break;
-                case InputTypeEnum.String:
-                    compare = new StringCompare();
-                    break;
-                default:
-                    compare = new NormalCompare();
-                    break;
+                compare = new StringCompare();
+
+                compareInput = new CompareInput
+                {
+                    Property = Expression.Call(property, ToStringMethod),
+                    Value = value
+                };
             }
 
-            var compareInput = new CompareInput
+            else
             {
-                Property = property,
-                Value = value
-            };
+                switch (filterInput.Type)
+                {
+                    case InputTypeEnum.Number:
+                    case InputTypeEnum.Boolean:
+                        compare = new NormalCompare();
+                        break;
+                    case InputTypeEnum.String:
+                        compare = new StringCompare();
+                        break;
+                    default:
+                        compare = new NormalCompare();
+                        break;
+                }
+
+                compareInput = new CompareInput
+                {
+                    Property = property,
+                    Value = value
+                };
+            }
+
 
             Expression resultExpr;
             switch (filterInput.Operation)
@@ -102,15 +123,20 @@ namespace DynamicQuery.Net.Services
                 case OperationTypeEnum.Contain:
                     resultExpr = compare.Contains<T>(compareInput);
                     break;
+                case OperationTypeEnum.StartWith:
+                    resultExpr = compare.StartsWith<T>(compareInput);
+                    break;
                 default:
                     resultExpr = compare.Equal<T>(compareInput);
                     break;
             }
+
             return resultExpr;
         }
 
 
-        private static Expression MultipleValueHandleExpression<T>(FilterInput filterInput , ParameterExpression parameter)
+        private static Expression MultipleValueHandleExpression<T>(FilterInput filterInput,
+            Expression parameter)
         {
             var stop = Stopwatch.StartNew();
             Expression valueArrayExpression = null;
@@ -122,7 +148,7 @@ namespace DynamicQuery.Net.Services
 
             foreach (var value in values)
             {
-                filterInput.Value = isJarray? ((JValue)value).Value:value;
+                filterInput.Value = isJarray ? ((JValue)value).Value : value;
                 if (valueArrayExpression == null)
                 {
                     valueArrayExpression = FilterExpression<T>(filterInput, parameter);
@@ -136,11 +162,16 @@ namespace DynamicQuery.Net.Services
                     valueArrayExpression = Expression.OrElse(valueArrayExpression,
                         FilterExpression<T>(filterInput, parameter));
             }
+
             stop.Stop();
             Trace.Write(stop.ElapsedTicks);
             return valueArrayExpression;
         }
+    }
 
-        
+    public enum OperationBetweenFiltersEnum
+    {
+        And = 0,
+        Or = 1
     }
 }
