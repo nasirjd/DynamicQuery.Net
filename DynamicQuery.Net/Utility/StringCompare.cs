@@ -15,6 +15,7 @@ namespace DynamicQuery.Net.Utility
         private static readonly MethodInfo CompareMethod = typeof(string).GetMethod("Compare", new[] { typeof(string), typeof(string) });
         private static readonly MethodInfo ContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
         private static readonly MethodInfo StartsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
+        private static readonly Expression NullExpression = Expression.Constant(null, typeof(string));
 
         public Expression Equal<T>(CompareInput input)
         {
@@ -54,14 +55,18 @@ namespace DynamicQuery.Net.Utility
 
         public Expression Contains<T>(CompareInput input)
         {
+            var nullCheck = Expression.Equal(input.Property, NullExpression);
             var contains = Expression.Call(input.Property, ContainsMethod, input.Value);
-            return Expression.Equal(contains, Expression.Constant(TrueValue));
+            var conditionalExpression = Expression.Condition(nullCheck, Expression.Constant(false), contains);
+            return Expression.Equal(conditionalExpression, Expression.Constant(TrueValue));
         }
 
         public Expression StartsWith<T>(CompareInput input)
         {
+            var nullCheck = Expression.Equal(input.Property, NullExpression);
             var startsWith = Expression.Call(input.Property, StartsWithMethod, input.Value);
-            return Expression.Equal(startsWith, Expression.Constant(TrueValue));
+            var conditionalExpression = Expression.Condition(nullCheck, Expression.Constant(false), startsWith);
+            return Expression.Equal(conditionalExpression, Expression.Constant(TrueValue));
         }
     }
 }

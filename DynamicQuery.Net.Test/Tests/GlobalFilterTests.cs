@@ -63,16 +63,47 @@ namespace DynamicQuery.Net.Test.Tests
                     Number = 5,
                 },
             };
-            
+
             string searchTerm = testNumber.ToString().Substring(1, 4);
             var itemsQueryable = items.AsQueryable();
-            var expectedResult = itemsQueryable.Where(p => p.Number.ToString().Contains(searchTerm));
+            var expectedResult = itemsQueryable.Where(p => p.Number.ToString().Contains(searchTerm)).ToList();
 
             //Act
-            var result = itemsQueryable.GlobalFilter(searchTerm);
+            var result = itemsQueryable.GlobalFilter(searchTerm).ToList();
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
         }
+
+        [Fact]
+        public void Filter_SearchTermIsNull_ReturnOriginalQueryable()
+        {
+            //Arrange
+            string searchTerm = null;
+            var queryable = Mock.QueryableItems;
+
+            //Act
+            var result = queryable.GlobalFilter(searchTerm);
+
+            //Assert
+            result.Should().BeEquivalentTo(queryable);
+        }
+
+        [Fact]
+        public void Filter_SearchTermIsLessThan3Chars_ReturnOriginalQueryable()
+        {
+            //Arrange
+            string searchTerm = TestHelpers.GetRandomChars(2);
+            var queryable = Mock.QueryableItems;
+
+            //Act
+            var result = queryable.GlobalFilter(searchTerm);
+
+            //Assert
+            result.Should().BeEquivalentTo(queryable);
+        }
+
+
+        
     }
 }
