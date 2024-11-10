@@ -27,15 +27,18 @@ namespace DynamicQuery.Net
         public static IOrderedQueryable<T> Filter<T>(this IQueryable<T> input, OrderFilterInput orderFilterInput)
         {
             return (IOrderedQueryable<T>)(orderFilterInput != null
-                ? input.Filter(orderFilterInput.Filter).Order(orderFilterInput.Order)
+                ? input.GlobalFilter(orderFilterInput.GlobalFilter)
+                    .Filter(orderFilterInput.PropertyFilters)
+                    .Order(orderFilterInput.Orders)
                 : input);
         }
 
         public static IOrderedQueryable<T> Filter<T>(this IQueryable<T> input,
-            OrderFilterNonFilterInput orderFilterInput)
+            OrderFilterMetaDataInput orderFilterInput)
         {
             return (IOrderedQueryable<T>)(orderFilterInput != null
-                ? input.Filter(orderFilterInput.Filter).Order(orderFilterInput.Order)
+                ? input.GlobalFilter(orderFilterInput.GlobalFilter)
+                    .Filter(orderFilterInput.PropertyFilters).Order(orderFilterInput.Orders)
                 : input);
         }
 
@@ -43,7 +46,7 @@ namespace DynamicQuery.Net
         {
             return dynamicInput != null
                 ? input.GlobalFilter(dynamicInput.GlobalFilter)
-                    .Filter(dynamicInput.Filter).Order(dynamicInput.Order).Paging(dynamicInput.Paging)
+                    .Filter(dynamicInput.PropertyFilters).Order(dynamicInput.Orders).Paging(dynamicInput.Pagination)
                 : (IOrderedQueryable<T>)input;
         }
 
@@ -52,7 +55,7 @@ namespace DynamicQuery.Net
             return orderInput != null ? OrderService.Ordering(input, orderInput) : (IOrderedQueryable<T>)input;
         }
 
-        public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, List<OrderInput> orderInput)
+        public static IOrderedQueryable<T> Order<T>(this IQueryable<T> input, IEnumerable<OrderInput> orderInput)
         {
             return orderInput != null ? OrderService.Ordering(input, orderInput) : (IOrderedQueryable<T>)input;
         }

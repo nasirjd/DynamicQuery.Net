@@ -141,14 +141,14 @@ namespace DynamicQuery.Net.Services
             var stop = Stopwatch.StartNew();
             Expression valueArrayExpression = null;
 
-            var isJarray = JArrayUtil.IsJArray(filterInput.Value);
+            var isJArray = JArrayUtil.IsJArray(filterInput.Value);
 
             var values = filterInput.Value as IEnumerable<object>;
             if (values == null) return Expression.Empty();
 
             foreach (var value in values)
             {
-                filterInput.Value = isJarray ? ((JValue)value).Value : value;
+                filterInput.Value = isJArray ? ((JValue)value).Value : value;
                 if (valueArrayExpression == null)
                 {
                     valueArrayExpression = FilterExpression<T>(filterInput, parameter);

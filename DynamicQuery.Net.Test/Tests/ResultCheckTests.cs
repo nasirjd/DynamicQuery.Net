@@ -13,7 +13,7 @@ namespace DynamicQuery.Net.Test.Tests
         [Fact]
         public void Filter_WhenSingleFilterWithSingleInputIsPassed_ShouldReturnFilteredQueryable()
         {
-            FilterInput filterInput =
+            var filterInput =
                 new FilterInput()
                 {
                     Operation = OperationTypeEnum.NotEqual,
@@ -32,7 +32,7 @@ namespace DynamicQuery.Net.Test.Tests
         [Fact]
         public void Filter_WhenSingleFilterWithMultipleInputIsPassed_ShouldReturnFilteredQueryable()
         {
-            FilterInput filterInput =
+            var filterInput =
                 new FilterInput()
                 {
                     Operation = OperationTypeEnum.NotEqual,
@@ -188,8 +188,8 @@ namespace DynamicQuery.Net.Test.Tests
 
             var orderFilterInput = new OrderFilterInput
             {
-                Order = orderInput,
-                Filter = filterInput
+                Orders = orderInput,
+                PropertyFilters = filterInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -228,7 +228,7 @@ namespace DynamicQuery.Net.Test.Tests
 
             var orderFilterInput = new OrderFilterInput
             {
-                Filter = filterInput
+                PropertyFilters = filterInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -259,7 +259,7 @@ namespace DynamicQuery.Net.Test.Tests
 
             var orderFilterInput = new OrderFilterInput
             {
-                Order = orderInput
+                Orders = orderInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -284,9 +284,9 @@ namespace DynamicQuery.Net.Test.Tests
                 }
             };
 
-            var orderFilterInput = new OrderFilterNonFilterInput()
+            var orderFilterInput = new OrderFilterMetaDataInput()
             {
-                Order = orderInput
+                Orders = orderInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -335,11 +335,11 @@ namespace DynamicQuery.Net.Test.Tests
                 }
             };
 
-            var orderFilterInput = new OrderFilterNonFilterInput()
+            var orderFilterInput = new OrderFilterMetaDataInput()
             {
-                Order = orderInput,
-                Filter = filterInput,
-                NonFilter = nonFilterInput
+                Orders = orderInput,
+                PropertyFilters = filterInput,
+                MetaData = nonFilterInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -399,10 +399,10 @@ namespace DynamicQuery.Net.Test.Tests
 
             var orderFilterInput = new DynamicQueryNetInput()
             {
-                Order = orderInput,
-                Filter = filterInput,
-                NonFilter = nonFilterInput,
-                Paging = paging
+                Orders = orderInput,
+                PropertyFilters = filterInput,
+                MetaData = nonFilterInput,
+                Pagination = paging
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -455,9 +455,9 @@ namespace DynamicQuery.Net.Test.Tests
 
             var orderFilterInput = new DynamicQueryNetInput()
             {
-                Order = orderInput,
-                Filter = filterInput,
-                NonFilter = nonFilterInput
+                Orders = orderInput,
+                PropertyFilters = filterInput,
+                MetaData = nonFilterInput
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -517,9 +517,9 @@ namespace DynamicQuery.Net.Test.Tests
 
             var orderFilterInput = new DynamicQueryNetInput()
             {
-                Filter = filterInput,
-                NonFilter = nonFilterInput,
-                Paging = paging
+                PropertyFilters = filterInput,
+                MetaData = nonFilterInput,
+                Pagination = paging
             };
 
             var filteredResult = Mock.QueryableItems.Filter(orderFilterInput);
@@ -548,7 +548,7 @@ namespace DynamicQuery.Net.Test.Tests
 
             var dynamicQueryNetInput = new DynamicQueryNetInput
             {
-                Filter = filterInput
+                PropertyFilters = filterInput
             };
 
             Mock.QueryableItems.Filter(dynamicQueryNetInput);
@@ -571,7 +571,7 @@ namespace DynamicQuery.Net.Test.Tests
 
             var dynamicQueryNetInput = new DynamicQueryNetInput
             {
-                Filter = filterInput
+                PropertyFilters = filterInput
             };
 
             Mock.QueryableItems.Filter(dynamicQueryNetInput);
@@ -595,7 +595,7 @@ namespace DynamicQuery.Net.Test.Tests
 
             var dynamicQueryNetInput = new DynamicQueryNetInput
             {
-                Filter = filterInput
+                PropertyFilters = filterInput
             };
             var expectedResult = Mock.QueryableItems.Where(p => p.Name.StartsWith(startWithValue));
             

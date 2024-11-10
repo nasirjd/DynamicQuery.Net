@@ -7,22 +7,30 @@ using DynamicQuery.Net.Utility;
 
 namespace DynamicQuery.Net.Services
 {
-    public class OrderService
+    public static class OrderService
     {
-        public static IOrderedQueryable<T> Ordering<T>(IQueryable<T> input, List<OrderInput> orderInputs)
+        public static IOrderedQueryable<T> Ordering<T>(IQueryable<T> queryable, IEnumerable<OrderInput> orderInputs)
         {
             var parameter = Expression.Parameter(typeof(T), "p");
-            var firstOrderInput = orderInputs[0];
-            var result = firstOrderInput.Order == OrderTypeEnum.Asc
-                ? OrderingHelper.OrderBy(input, firstOrderInput.Property, parameter)
-                : OrderingHelper.OrderByDescending(input, firstOrderInput.Property, parameter);
 
-            for (int i = 1; i < orderInputs.Count; i++)
+            IOrderedQueryable<T> result = null;
+            var isFirst = true;
+            foreach (var orderInput in orderInputs)
             {
-                var orderInput = orderInputs[i];
-                result = orderInput.Order == OrderTypeEnum.Asc
-                    ? OrderingHelper.ThenBy(result, orderInput.Property, parameter)
-                    : OrderingHelper.ThenByDescending(result, orderInput.Property, parameter);
+                if (isFirst)
+                {
+                    result = orderInput.Order == OrderTypeEnum.Asc
+                        ? OrderingHelper.OrderBy(queryable, orderInput.Property, parameter)
+                        : OrderingHelper.OrderByDescending(queryable, orderInput.Property, parameter);
+                    
+                    isFirst = false;
+                }
+                else
+                {
+                    result = orderInput.Order == OrderTypeEnum.Asc
+                        ? OrderingHelper.ThenBy(result, orderInput.Property, parameter)
+                        : OrderingHelper.ThenByDescending(result, orderInput.Property, parameter);
+                }
             }
 
             return result;
