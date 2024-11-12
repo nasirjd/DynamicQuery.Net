@@ -1,4 +1,5 @@
 ﻿using DynamicQuery.Net.Enums;
+using DynamicQuery.Net.Services;
 
 namespace DynamicQuery.Net.Dto.Input
 {

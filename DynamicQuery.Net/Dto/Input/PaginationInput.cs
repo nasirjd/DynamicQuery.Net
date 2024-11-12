@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicQuery.Net.Dto.Input
 {
-    public class PagingInput
+    public class PaginationInput
     {
         public int Page { get; set; }
         public int Size { get; set; }

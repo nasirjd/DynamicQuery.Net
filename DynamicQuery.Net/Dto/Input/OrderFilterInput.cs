@@ -8,7 +8,7 @@ namespace DynamicQuery.Net.Dto.Input
 {
     public class OrderFilterInput
     {
-        public string GlobalFilter { get; set; }
+        public IEnumerable<FilterInput> GlobalPropertyFilters { get; set; }
         public IEnumerable<FilterInput> PropertyFilters { get; set; }
         public IEnumerable<OrderInput> Orders { get; set; }
     }

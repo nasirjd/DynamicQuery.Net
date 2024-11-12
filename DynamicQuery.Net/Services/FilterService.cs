@@ -18,24 +18,36 @@ namespace DynamicQuery.Net.Services
         private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod("ToString");
 
         public static IQueryable<T> FilterByInputs<T>(IQueryable<T> dataInput, IEnumerable<FilterInput> filterInputs,
-            OperationBetweenFiltersEnum operationBetweenFilters = OperationBetweenFiltersEnum.And)
+            LogicalOperator op = LogicalOperator.And)
         {
             var parameter = Expression.Parameter(typeof(T), "p");
+            var resultExpr = FilterByInputsExpression<T>(filterInputs,parameter, op);
+            var result = dataInput.Where(Expression.Lambda<Func<T, bool>>(resultExpr, parameter));
             
-            Expression resultExpr = Expression.Constant(operationBetweenFilters == OperationBetweenFiltersEnum.And);
+            return result;
+        }
+        
+        public static Expression FilterByInputsExpression<T>(IEnumerable<FilterInput> filterInputs,
+            ParameterExpression parameter,LogicalOperator op = LogicalOperator.And)
+        {
+
+            Expression resultExpr = null;
             foreach (var filterInput in filterInputs)
             {
                 Expression filterExpression = null;
                 filterExpression = filterInput.Value is IEnumerable<object>
                     ? MultipleValueHandleExpression<T>(filterInput, parameter)
                     : FilterExpression<T>(filterInput, parameter);
-
-                resultExpr = operationBetweenFilters == OperationBetweenFiltersEnum.And
-                    ? Expression.AndAlso(resultExpr, filterExpression)
-                    : Expression.Or(resultExpr, filterExpression);
+                
+                if (resultExpr == null)
+                    resultExpr = filterExpression;
+                else
+                    resultExpr = op == LogicalOperator.And
+                        ? Expression.AndAlso(resultExpr, filterExpression)
+                        : Expression.Or(resultExpr, filterExpression);
             }
-
-            return dataInput.Where(Expression.Lambda<Func<T, bool>>(resultExpr, parameter));
+            
+            return resultExpr;
         }
 
         public static IQueryable<T> FilterByInput<T>(IQueryable<T> dataInput, FilterInput filterInput)
@@ -71,7 +83,7 @@ namespace DynamicQuery.Net.Services
                 compareInput = new CompareInput
                 {
                     Property = Expression.Call(property, ToStringMethod),
-                    Value = value
+                    Value = Expression.Constant(filterInput.Value.ToString())
                 };
             }
 
@@ -167,11 +179,5 @@ namespace DynamicQuery.Net.Services
             Trace.Write(stop.ElapsedTicks);
             return valueArrayExpression;
         }
-    }
-
-    public enum OperationBetweenFiltersEnum
-    {
-        And = 0,
-        Or = 1
     }
 }

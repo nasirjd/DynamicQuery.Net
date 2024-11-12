@@ -26,7 +26,7 @@ namespace DynamicQuery.Net.Services
                 Operation = OperationTypeEnum.Contain
             });
 
-            return FilterService.FilterByInputs(queryable, filters, OperationBetweenFiltersEnum.Or);
+            return FilterService.FilterByInputs(queryable, filters, LogicalOperator.Or);
         }
 
         private static IEnumerable<CustomProperty> GetTypeCachedCustomProperties<T>()
