@@ -743,8 +743,9 @@ namespace DynamicQuery.Net.Test.Tests
             result.Data.Should().BeEquivalentTo(expectedData);
         }
 
+
         [Fact]
-        public void Filter_DynamicQueryInputWithOrOperator_ShouldOrFilterInputsTogether()
+        public void Filter_DynamicQueryInputWithBothGlobalAndPropertyFilters_ShouldFilterThemUsingLogicalOr()
         {
             //Arrange
 
@@ -752,12 +753,12 @@ namespace DynamicQuery.Net.Test.Tests
             var itemsQueryable = items.AsQueryable();
             items[2].ID = items[0].ID + items[2].ID;
             items[0].Name += items[2].Name;
-            
-            var nameToSearch1 = items[2].Name.Substring(10,10);
-            var idToSearch = items[2].ID.Substring(0,10);
-            var nameToSearch2 = items[3].Name.Substring(0,10);
+
+            var nameToSearch1 = items[2].Name.Substring(10, 10);
+            var idToSearch = items[2].ID.Substring(0, 10);
+            var nameToSearch2 = items[3].Name.Substring(0, 10);
             var nameToSearch3 = items[6].Name;
-            
+
             var queryNetInput = new DynamicQueryNetInput
             {
                 PropertyFilters = new List<FilterInput>()
@@ -798,6 +799,50 @@ namespace DynamicQuery.Net.Test.Tests
 
             var expectedData = items.Where(p => (p.Name.Contains(nameToSearch1) && p.ID.StartsWith(idToSearch)) ||
                                                 (p.Name.StartsWith(nameToSearch2) || p.Name == nameToSearch3)).ToList();
+
+            //Act
+            var result = itemsQueryable.Filter(queryNetInput);
+
+            //Assert
+            result.Data.Should().BeEquivalentTo(expectedData);
+        }
+
+
+        [Fact]
+        public void
+            Filter_DynamicQueryInputWithGlobalFiltersAndEmptyNotNullFilterInputs_ShouldOnlyFilterItUsingGlobalFilters()
+        {
+            //Arrange
+
+            var items = _fixture.CreateMany<MockItem>(10).ToList();
+            var itemsQueryable = items.AsQueryable();
+
+            var nameToStartWith = items[1].Name.Substring(0, 10);
+            var idToEqual = items[4].ID;
+
+            var queryNetInput = new DynamicQueryNetInput
+            {
+                PropertyFilters = new List<FilterInput>(),
+                GlobalPropertyFilters = new List<FilterInput>
+                {
+                    new FilterInput
+                    {
+                        Operation = OperationTypeEnum.StartWith,
+                        Property = nameof(MockItem.Name),
+                        Type = InputTypeEnum.String,
+                        Value = nameToStartWith
+                    },
+                    new FilterInput
+                    {
+                        Operation = OperationTypeEnum.Equal,
+                        Property = nameof(MockItem.ID),
+                        Type = InputTypeEnum.String,
+                        Value = idToEqual
+                    }
+                }
+            };
+
+            var expectedData = items.Where(p => p.Name.StartsWith(nameToStartWith) || p.ID == idToEqual).ToList();
 
             //Act
             var result = itemsQueryable.Filter(queryNetInput);

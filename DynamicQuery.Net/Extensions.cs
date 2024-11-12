@@ -59,12 +59,12 @@ namespace DynamicQuery.Net
 
                 Expression resultExpr = null;
 
-                if (dynamicInput.GlobalPropertyFilters != null)
+                if (dynamicInput.GlobalPropertyFilters?.Any() == true)
                     resultExpr =
                         FilterService.FilterByInputsExpression<T>(dynamicInput.GlobalPropertyFilters, parameter,
                             LogicalOperator.Or);
 
-                if (dynamicInput.PropertyFilters != null)
+                if (dynamicInput.PropertyFilters?.Any() == true)
                 {
                     var filterExpression =
                         FilterService.FilterByInputsExpression<T>(dynamicInput.PropertyFilters, parameter);
